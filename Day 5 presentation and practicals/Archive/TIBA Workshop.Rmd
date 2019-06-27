@@ -1,0 +1,284 @@
+---
+title: "Statistical tools and Data Management"
+author: "Christopher Maronga"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+- \usepackage{xcolor}
+- \usepackage{longtable}
+output:
+   beamer_presentation:
+    theme: "CambridgeUS"
+    colortheme: "default"
+    fonttheme: "default"
+    slide_level: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      message = F,
+                      warning = F,
+                      comment = "")
+```
+
+
+## Plan for this session(1/2)
+This session will focus on learning the basic data management using R statistical software
+
+**Why R?**
+
+There are other cormercial statistical tools such as STATA, SAS and SPSS that can employed in data management
+We chose R over the rest because:-
+
+- Open source (free to use)\newline
+- Relates to other languages and systems\newline
+- Its flexible, fun and easy to learn\newline
+- Outstanding visualization\newline
+- Advanced statistical language\newline
+
+
+R has a vast community, supports user defined extensions (packages) and its cross-platform compatible (can be used across different computer operating systems)
+
+## Plan for this session(2/2)
+In the next couple of minutes, we will explore data management tasks like:-
+
+- General data validation checks (missing values, outlier values etc.)
+- Identifying and removing duplicates
+- Manipulating variables
+- Creating new variables
+- subsetting/filtering data
+- Reshaping and Merging datasets
+
+Data cleaning and reshaping is one of the task that we spend much time on while undertaking data management activies
+
+We will introduce a complete toolkit of R packages for cleaning, manipulating, reshaping and visualizing your data
+
+## Getting data into R
+Research data can come in different flavours:-
+
+- Flat files (`.xlsx`,`.csv`,`.txt`)
+- Data on web-based databases (`REDCap`, `MySQL databases` and `OpenClinica`)
+- Data from other statistical softwares (`STATA`, `SAS` and `SPSS`)
+
+We will briefly cover how to read your data into R from the first 2 sources above and begin managing it
+
+```{r flatfiles, eval=F}
+library(readxl) # for reading .xlsx files
+read_excel()
+
+library(readr) # for reading .csv and .txt files
+read_csv() and read_tsv()
+```
+**NOTE:** Alot of functions are available for reading flat files into R, just `Google` them
+
+## Reading flat files
+
+### Lets see how this works with a practical example
+
+
+## Connecting R to Web-based databases(1/2)
+Special packages and functions are available to help you connect and fetch data from stored in your web-based databases from within R software
+
+**Connecting to REDCap**
+```{r eval=F}
+library(redcapAPI) # load required package
+# create a connection
+con<-redcapConnection(url='https://redcaplink/api/',
+                      token = 'your account token here')
+# export data
+my_data<-exportRecords(con, fields = NULL, forms = null ,
+                       records = NULL, events = NULL , 
+                       labels = TRUE, dates = TRUE, 
+                       survey = FALSE,factors=F, dag = T,
+                       checkboxLabels = TRUE)
+?redcapAPI # get more help
+```
+
+## Connecting to REDCap
+
+### Lets see how this works with a practical example
+
+## Connecting R to Web-based databases(2/2)
+
+**Connecting to `MySQL` dabases**
+```{r eval=F}
+library(DBI) # provides the interface
+library(RMySQL) # implements the process
+# create a connection
+con <- dbConnect(MySQL(),
+                 host= "hostname",
+                 dbname = "databasename",
+                 user = "username",
+                 password = "password")
+# list database tables
+dbase_tables <- dbListTables(con)
+# export data
+my_data <- dbGetQuery(con, "SQL query here")
+# close database connection
+dbDisconnect(con) # remember to close connection
+```
+
+## Connecting to `MySQL` dabases
+
+### Lets see how this works with a practical example
+
+
+## Cleaning data in R
+Steps invloved in cleaning data\vspace{10mm}
+
+- Explore the raw data\vspace{10mm}
+- Tidy your data\vspace{10mm}
+- Preparing for analysis\vspace{10mm}
+
+## Cleaning data in R -- Sources of errors
+
+Possible sources of error
+
+- variability measurement\newline
+- Experimental error\newline
+- Data entry error\newline
+- Valid measurement\newline
+
+Identifying:-
+
+- Focus on context\newline
+- Possible ranges
+
+
+## Cleaning data in R -- Exploring raw data
+This step is for understanding the structure of your data.
+Looking through the data components (what variables, types and scope)
+
+- `class()`
+- `dim()`
+- `names()`
+- `str()` or `glimpse()`
+- `summary()`
+- `head()`
+- `tail()`
+
+You can also visualize data to quickly identify extreme or suspicious values in your data
+
+- hisogram
+- scatterplots
+- boxplots
+
+## Cleaning data in R -- Tidying data
+Violations of priniciples of tidy data
+
+- Column headers are values, not variables
+- Variables stored in both rows and columns
+- Multiple variables are stored in one column
+
+`tidyr()` functions to reshape and restored tidy data
+
+- `gather()`
+- `spread()`
+- `separate()`
+- `unite()`
+
+`gather()` and `spread()` outputs gives rise to most commonly reffered types of datasets
+
+- `wide datasets` _more columns than rows_
+- `long datasets` _more rows than columns_
+
+## Cleaning data in R -- Prepare for data analysis
+Type conversion at its basic ( _putting variables into their required formats_ )
+
+- **character**
+- integer
+- logical
+- **factor**
+- string manipulation
+
+Its extremely important to know how to convert your variables from one type to another just incase you require it
+
+- `as.*` family of functions for type conversion
+- dealing with missing values `na.omit()` and `complete.cases()`
+- outliers/obvious errors -- `histograms and boxplots`
+
+
+
+
+## Data Warehousing
+We will explore a sample dataset using `dplyr` functions among others
+
+**dply functions**
+
+- `select()`   : Subset columns
+- `filter()`   : Subset rows
+- `arrange()`  : Reorders rows
+- `mutate()`   : Add columns to existing data
+- `summarise()`: Summarizing data set
+
+**additional functions**
+
+- `summary()` : printing general summary
+- `is.na()`   : checking for missing values
+- `merge()`   : to merge 2 datasets
+
+## Data Warehousing
+
+### Lets see how this works with a practical example
+
+
+
+## Exporting datasets/saving files
+R allows you to save or export datasets from the workspace into `.csv` or `tab delimeted`\newline
+
+```{r, eval=F, echo=TRUE}
+write.csv(dataset_name, "dest_folder/preferred_name.csv")
+```
+
+
+You can also save an entire workspace and load it later to an R session like this\newline
+```{r eval=F, echo=T}
+save(list = ls(),file = "pref_name.RDA") # save datasets in workspace
+
+load("pref_name.RDA") # load back items into workspace
+```
+
+
+
+## Reports authoring, visualization and automating processes
+Two most powerful tools for report authoring, visualization and process automation
+
+- [**Rmarkdown**](https://rmarkdown.rstudio.com/lesson-1.html) is file format for making dynamic documents with R\newline
+
+- [**Shiny**](https://www.rstudio.com/products/shiny/) is an open source R package that provides an elegant and powerful web framework for building web applications using R
+
+Examples of reports created using R Shiny
+
+[_CHAIN Network Reports Dashboard_](https://reports.chainnetwork.org/)
+
+**NOTE:** R Shiny and creating reports dashboards is beyond the scope of this workshop
+
+
+## Version control scripts and projects within RStudio
+Rstudio IDE supports version control systems such as `Git` and `SVN`.
+Enables vesrion control data analysis/management codes as well documents withing the R project.
+
+```{r why R, out.width="100%",fig.align='left',out.height="60%", echo=F}
+library(knitr)
+include_graphics("terminal_window.png")
+```
+
+
+
+# THANK YOU
+
+
+
+

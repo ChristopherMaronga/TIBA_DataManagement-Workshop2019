@@ -1,0 +1,32 @@
+---
+title: "TIBA Data Management Plan"
+author: "Christopher Maronga"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## RESEARCH SYNOPSIS
+This is a prospective interventional study with quarterly visits for up to 12 months of follow up, 480 sexually active girls (by self-report), 16 – 20 years of age, willing to undergo study procedures and willing and able to provide independent informed consent/assent will be eligible for this study. Girls with known plans of relocation from study area for more than 3 consecutive months and with any medical condition that might make study participation unsafe or interfere with study objectives will be excluded.
+Eligibility determination and enrollment into the study will be done on the same day (day 1), consenting/assenting (for <18 years) will be done, locator information collected and questionnaires will be administered to obtain demographic information. During subsequent follow up visits up to 12 months, questionnaires will be used to collect information on; sexual history and behavior, STI symptoms, use and attitudes of contraceptive. Urine will be collected to do a pregnancy test and Urine dipstick will be performed to detect urinary tract infections. Blood and genital swabs will also be collected for various laboratory tests such as HPV, HSV, Syphilis, BV, HBV serology etc.
+Enrollment: The proposed duration for enrolling the 480 sexually active girls is approximately six months, which means that the last participant will exit the study six months after the first ever enrolled participant has exited the study.
+
+
+
+## RESEARCH AIMS/GOALS
+
+1.1.1	To determine the prevalence of and factors associated with reproductive tract infections.
+
+1.1.2	To determine the incidence of and factors associated with acquisition of reproductive tract infections.
+
+1.1.3	To determine the prevalence of contraceptive use and factors associated with contraceptive use among adolescent girls living in informal settlements and other high population density low income settlements.
+
+
+
+
+
+
