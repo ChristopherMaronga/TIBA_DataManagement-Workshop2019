@@ -101,7 +101,7 @@ adult_adm_txt <- read_tsv("datasets/adult_admission.txt")
 library(redcapAPI) # load required package
 
 # create a connection
-con <- redcapConnection(url='http://uat/redcap/api/',token = 'F4D23D3905989F9747D39DC8A470445E')
+con <- redcapConnection(url='http://uat/redcap/api/',token = 'token here')
 
 # export data
 redcap_all_data<-exportRecords(con, fields = NULL, forms = NULL , records = NULL, events = NULL ,
