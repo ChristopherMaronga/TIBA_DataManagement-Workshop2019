@@ -39,8 +39,18 @@ dbListFields(con, ) # date_admn, admin_ward, diagnosis_1_disch,diagnosis_1_categ
 ## ++ Approach 1 (write an SQL code from within R)
 adult_admission <- dbGetQuery(con, "select * from adult_admission")
 
-haematology_table <-dbGetQuery(con, 
-                               "select fk_study, adm_sample, fk_specimen from haematology_test") 
+person_table <- dbGetQuery(con, "select * from person")
+
+resuls <- dbGetQuery(con, "select * from haematology_test")
+
+demographics <- dbGetQuery(con,
+                           "select adult_admission.fk_person, 
+                           adult_admission.date_admn, person.id, 
+                           person.dob, person.sex
+                           from adult_admission
+                           join person on adult_admission.fk_person = person.id")
+
+
 
 ## compute age from dob and date_admn
 
@@ -79,33 +89,34 @@ tiba_demo_data <-  # divide days by 365.25
 # reading from flat files ----
 
 # load packages
-library()  # for reading .xlsx data (excel datasets)
-library()   # read a variety of formats (.csv, tab delimeted)
-
+library(readxl)  # for reading .xlsx data (excel datasets)
+#require(readxl)
+installed.packages("readxl")
+library(readr)   # reard a variety of formats (.csv, tab delimeted)
 
 ## read various formats of data
 dir()  # list items on the datasets folder
 
 # read .xlsx (excel data)
-adult_adm_excel <- 
+adult_adm_excel <- read_excel("Day 5 presentation and practicals/datasets/adult_admission.xlsx", sheet = "sheet_name")
 
 # read .csv (comma separated files)
-adult_adm_csv <- 
+adult_adm_csv <- read_csv("")
 
 # read .txt(tab delimeted data)
-adult_adm_txt <- 
-
+adult_adm_txt <-read_tsv("") 
 
 # Connecting to web-based database (REDCap) ----
 
-library() # load required package
+library(redcapAPI) # load required package
 
 # create a connection
-con <- redcapConnection(url='redcap_link here',token = 'token here')
+con <- redcapConnection(url='http://uat/redcap/api/',
+                        token = 'token_here')
 
 # export data
-redcap_all_data<-exportRecords('conection_here', fields = NULL, forms = NULL , 
-                               records = NULL, events = NULL ,labels = TRUE, 
+redcap_all_data<-exportRecords(con, fields = NULL, forms = "demographics" , 
+                               records = NULL, events = "year_1_arm_1" ,labels = TRUE, 
                                dates = TRUE, survey = FALSE, factors=F, dag = T, 
                                checkboxLabels = TRUE)
 
@@ -116,13 +127,13 @@ redcap_all_data<-exportRecords('conection_here', fields = NULL, forms = NULL ,
 
 
 ## You can also export events (timepoints)
-total_events <- 
+total_events <- exportEvents(con)
 
 ## you can export instruments (CRFs)
-CRFs_name <- 
+CRFs_name <- exportInstruments(con)
 
 ## You can export users and their rights
-all_users <- 
+all_users <- exportUsers(con)
 
 ### +++++++++++ --- AND MANY MORE -----++++++
 
@@ -148,23 +159,22 @@ con <- dbConnect()   # password associated with username
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # READ IN messy datasets +++++++++++++++++++++++++++++++++++++++++++++++++
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-adult_admission <- 
+adult_admission <- read_csv("Day 5 presentation and practicals/messy_datasets/adult_adm_data.csv")
 
-lab_results <- 
+lab_results <- read_csv("Day 5 presentation and practicals/messy_datasets/lab_results.csv")
 
 
 # Exploring raw data ------------------------------------------------------
+class(adult_admission)
+dim(adult_admission)
+str(adult_admission)
+glimpse(adult_admission)  # better version of str()
 
-dim()
-str()
-glimpse()  # better version of str()
+summary(lab_results) # quick summary of all variables
+head(lab_results, n=10)
+tail(lab_results, n = 3)
 
-head()
-tail()
-
-summary() # quick summary of all variables
-
-
+ggplot(adult_admission, aes(muac_disch))+geom_histogram()
 # General housekeeping (maintaining the quality) ---------------------------------
 # drop un-necessary columns
 
